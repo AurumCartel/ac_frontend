@@ -1,0 +1,13 @@
+"use client";
+import useTitle from "@/hooks/useTitle";
+
+export default function Page() {
+    useTitle('Accueil');
+    return (
+        <>
+            <div className="flex flex-col min-h-screen">
+                <h1>Home</h1>
+            </div>
+        </>
+    );
+}

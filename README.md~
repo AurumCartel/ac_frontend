@@ -1,4 +1,8 @@
-Frontend du projet Aurum Cartel WebSites
+This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+
+## Getting Started
+
+First, run the development server:
 
 ```bash
 npm run dev
@@ -11,7 +15,7 @@ bun dev
 ```
 
 ```bash
-ac_frontend/
+my-nextjs-project/
 ├── .idea/                 # Configuration de l'IDE (optionnel)
 ├── node_modules/          # Dépendances installées
 ├── public/                # Fichiers statiques (logo, images, etc.)
