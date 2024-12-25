@@ -1,6 +1,5 @@
 "use client";
 import useTitle from "@/hooks/useTitle";
-import Image from "next/image";
 import {FaUsers} from "react-icons/fa";
 import {ImStatsDots} from "react-icons/im";
 import HeroSection from "@/components/HeroSection";
