@@ -31,11 +31,11 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-screen flex flex-col`}
       >
         <Header />
-        <main className="flex-1 bg-[url('/assets/images/bg2.jpg')] bg-cover bg-no-repeat text-white">
+        <main
+            className="flex-1 bg-[url('/assets/images/bg2.jpg')] bg-cover bg-no-repeat text-white relative before:absolute before:inset-0 before:bg-black before:opacity-10">
           {children}
-          <div className="absolute inset-0 bg-black opacity-10"></div>
         </main>
-        <Footer />
+        <Footer/>
       </body>
     </html>
   );
