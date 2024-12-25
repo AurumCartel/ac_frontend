@@ -1,0 +1,25 @@
+{
+  "cards": [
+    {
+      "id": 1,
+      "image": "/assets/images/bg1.jpg",
+      "category": "Fondamentales",
+      "description": "L'analyse fondamentale se penche sur les bases économiques et financières qui influencent la valeur d'un actif.",
+      "author": "Sandro Lu"
+    },
+    {
+      "id": 2,
+      "image": "/assets/images/bg1.jpg",
+      "category": "Trois Touches",
+      "description": "L’analyse fondamentale se penche sur les\nbases économiques et financières qui\ninfluencent la valeur d'un actif.",
+      "author": "Sandro Lu"
+    },
+    {
+      "id": 3,
+      "image": "/assets/images/bg1.jpg",
+      "category": "Fondamentales",
+      "description": "L'analyse fondamentale se penche sur les bases économiques et financières qui influencent la valeur d'un actif.",
+      "author": "Sandro Lu"
+    }
+  ]
+}
