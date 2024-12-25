@@ -39,8 +39,8 @@ export default function Header() {
                                 href={item.href}
                                 className={`px-3 py-2 rounded-md text-sm font-medium transition-colors ${
                                     pathname === item.href
-                                        ? "bg-zinc-800 text-white"
-                                        : "text-zinc-300 hover:bg-zinc-800 hover:text-white"
+                                        ? "underline underline-offset-8 decoration-[#D4AF37] text-[#D4AF37]"
+                                        : "text-zinc-300 hover:[#D4AF37] hover:text-white"
                                 }`}
                             >
                                 {item.name}
@@ -89,8 +89,8 @@ export default function Header() {
                                 href={item.href}
                                 className={`block px-3 py-2 rounded-md text-base font-medium ${
                                     pathname === item.href
-                                        ? "bg-zinc-800 text-white"
-                                        : "text-zinc-300 hover:bg-zinc-800 hover:text-white"
+                                        ? "bg-[#D4AF37] text-white"
+                                        : "text-zinc-300 hover:bg-[#D4AF37] hover:text-white"
                                 }`}
                                 onClick={() => setIsMenuOpen(false)}
                             >
