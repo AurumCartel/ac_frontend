@@ -1,0 +1,16 @@
+import type {NextConfig} from "next";
+
+const nextConfig: NextConfig = {
+    async redirects() {
+        return [
+            {
+                source: "/", // Page racine
+                destination: "/pages/home", // Rediriger vers cette page
+                permanent: true, // True = redirection permanente (301), False = redirection temporaire (302)
+            },
+        ];
+    },
+    /* Autres options de configuration ici */
+};
+
+export default nextConfig;
