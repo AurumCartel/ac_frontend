@@ -11,7 +11,7 @@ interface CardCourseProps {
 const CardCourse: React.FC<CardCourseProps> = ({image, category, description}) => {
     return (
         <article
-            className="max-w-sm mx-auto overflow-hidden transition-transform duration-300 hover:scale-102 hover:shadow-xl">
+            className="max-w-sm mx-auto overflow-hidden transition-transform duration-300 hover:scale-102 hover:shadow-xl hover:cursor-pointer">
             <div className="relative">
                 <Image
                     className="w-full h-64 object-cover rounded-t-xl"
