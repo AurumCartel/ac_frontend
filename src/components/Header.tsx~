@@ -10,6 +10,14 @@ export default function Header() {
     const pathname = usePathname();
     const [isMenuOpen, setIsMenuOpen] = useState(false);
 
+    // Définir les pages où le Header doit être masqué
+    const hiddenOnPages = ["/pages/messagerie"];
+    const shouldHideHeader = hiddenOnPages.includes(pathname);
+
+    if (shouldHideHeader) {
+        return null; // Ne pas afficher le header si la route correspond
+    }
+
     const navigation = [
         {name: "Accueil", href: "/pages/home"},
         {name: "Cours", href: "/pages/cours"},
@@ -17,7 +25,8 @@ export default function Header() {
     ];
 
     return (
-        <header className="bg-zinc-900 text-white w-full sticky top-0 z-50">
+        <header className="bg-zinc-900 text-white w-full top-0 z-50">
+            {/* Rendu normal du Header */}
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="flex justify-between items-center h-16">
                     {/* Logo */}
