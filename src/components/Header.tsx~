@@ -11,7 +11,7 @@ export default function Header() {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
 
     // Simulation de l'état de l'utilisateur connecté
-    const isUserLoggedIn = false; // Remplacer par true pour simuler un utilisateur connecté
+    const isUserLoggedIn = true; // Remplacer par true pour simuler un utilisateur connecté
 
     const navigation = [
         {name: "Accueil", href: "/pages/home"},

@@ -3,9 +3,11 @@
 import React, {useState} from "react";
 import {Search, Menu, Camera, Send, Mic, Settings, ArrowLeft} from "lucide-react";
 import {Conversation} from "@/utils/types/Conversation";
+import useTitle from "@/hooks/useTitle";
 
 
 const MessagingInterface = () => {
+    useTitle("Messages");
     const [message, setMessage] = useState("");
     const [activeConversation, setActiveConversation] = useState<Conversation | null>(null);
     const [showChat, setShowChat] = useState(false);
