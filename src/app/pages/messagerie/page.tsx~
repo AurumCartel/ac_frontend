@@ -3,7 +3,7 @@
 import React, {useState} from 'react';
 import {Search, Menu, Camera, Send, Mic, Settings, ArrowLeft} from 'lucide-react';
 
-const Page = () => {
+const MessagingInterface = () => {
     const [message, setMessage] = useState('');
     const [activeConversation, setActiveConversation] = useState(null);
     const [showChat, setShowChat] = useState(false);
@@ -17,16 +17,36 @@ const Page = () => {
             unread: 2,
             isGroup: true,
             messages: [
-                {id: 1, sender: "Personne 1", content: "Bonjour tout le monde comment allez vous cette semaine ?"},
-                {id: 2, sender: "Personne 2", content: "Bonjour, ça va tranquille"},
-                {id: 3, sender: "Personne 3", content: "Très bien merci !"},
-                {id: 4, sender: "Personne 4", content: "Super journée !"},
-                {id: 5, sender: "Personne 5", content: "On se retrouve bientôt ?"},
-                {id: 6, sender: "Personne 6", content: "Parfait pour moi"},
-                {id: 7, sender: "Personne 7", content: "À très vite"},
-                {id: 8, sender: "Personne 8", content: "Excellente idée"},
-                {id: 9, sender: "Personne 9", content: "Je valide"},
-                {id: 10, sender: "Personne 10", content: "Comment allez-vous ?"}
+                {
+                    id: 1,
+                    sender: "Personne 1",
+                    content: "Bonjour tout le monde comment allez vous cette semaine ?",
+                    isMe: false
+                },
+                {
+                    id: 2,
+                    sender: "Moi",
+                    content: "Bonjour à tous ! Je vais très bien, merci. J'espère que vous aussi ?",
+                    isMe: true
+                },
+                {id: 3, sender: "Personne 2", content: "Bonjour, ça va tranquille", isMe: false},
+                {id: 4, sender: "Personne 3", content: "Très bien merci !", isMe: false},
+                {
+                    id: 5,
+                    sender: "Moi",
+                    content: "Super ! On pourrait peut-être organiser quelque chose ce weekend ?",
+                    isMe: true
+                },
+                {id: 6, sender: "Personne 4", content: "Super journée !", isMe: false},
+                {id: 7, sender: "Personne 5", content: "On se retrouve bientôt ?", isMe: false},
+                {id: 8, sender: "Moi", content: "Je suis libre samedi après-midi si ça vous dit !", isMe: true},
+                {id: 9, sender: "Personne 6", content: "Parfait pour moi", isMe: false},
+                {id: 10, sender: "Moi", content: "Génial ! On dit 15h au café habituel alors ?", isMe: true},
+                {id: 11, sender: "Personne 7", content: "À très vite", isMe: false},
+                {id: 12, sender: "Personne 8", content: "Excellente idée", isMe: false},
+                {id: 13, sender: "Moi", content: "Super, j'ai hâte de vous revoir tous !", isMe: true},
+                {id: 14, sender: "Personne 9", content: "Je valide", isMe: false},
+                {id: 15, sender: "Personne 10", content: "Comment allez-vous ?", isMe: false}
             ]
         },
         {
@@ -36,8 +56,10 @@ const Page = () => {
             time: "5 min",
             unread: 0,
             messages: [
-                {id: 1, sender: "Sandro Lu", content: "Hey, comment vas-tu ?"},
-                {id: 2, sender: "Sandro Lu", content: "On se voit demain ?"}
+                {id: 1, sender: "Sandro Lu", content: "Hey, comment vas-tu ?", isMe: false},
+                {id: 2, sender: "Moi", content: "Salut Sandro ! Je vais bien, merci. Et toi ?", isMe: true},
+                {id: 3, sender: "Sandro Lu", content: "On se voit demain ?", isMe: false},
+                {id: 4, sender: "Moi", content: "Oui, avec plaisir ! À quelle heure tu préfères ?", isMe: true}
             ]
         },
         {
@@ -47,8 +69,10 @@ const Page = () => {
             time: "15 min",
             unread: 1,
             messages: [
-                {id: 1, sender: "Marie K.", content: "Merci pour hier"},
-                {id: 2, sender: "Marie K.", content: "Super, merci!"}
+                {id: 1, sender: "Marie K.", content: "Merci pour hier", isMe: false},
+                {id: 2, sender: "Moi", content: "C'était super ! On remet ça bientôt ?", isMe: true},
+                {id: 3, sender: "Marie K.", content: "Super, merci!", isMe: false},
+                {id: 4, sender: "Moi", content: "Je suis libre la semaine prochaine si tu veux !", isMe: true}
             ]
         },
     ];
@@ -163,13 +187,19 @@ const Page = () => {
                             <div className="flex-1 overflow-y-auto">
                                 <div className="p-4 space-y-4">
                                     {activeConversation.messages.map((msg) => (
-                                        <div key={msg.id} className="flex items-start gap-4">
+                                        <div key={msg.id}
+                                             className={`flex items-start gap-4 ${msg.isMe ? 'flex-row-reverse' : ''}`}>
                                             <div
                                                 className="w-8 h-8 bg-[#D4AF37] rounded-full flex items-center justify-center">
-                                                <span className="text-zinc-900 text-sm">👤</span>
+                                                <span className="text-zinc-900 text-sm">
+                                                    {msg.isMe ? '👤' : (activeConversation.isGroup ? '👥' : '👤')}
+                                                </span>
                                             </div>
-                                            <div className="bg-zinc-800 rounded-lg p-3 max-w-md">
-                                                <p className="text-sm font-semibold mb-1 text-[#D4AF37]">{msg.sender}</p>
+                                            <div
+                                                className={`rounded-lg p-3 max-w-md ${msg.isMe ? 'bg-[#D4AF37] text-zinc-900' : 'bg-zinc-800 text-white'}`}>
+                                                <p className={`text-sm font-semibold mb-1 ${msg.isMe ? 'text-zinc-900' : 'text-[#D4AF37]'}`}>
+                                                    {msg.sender}
+                                                </p>
                                                 <p>{msg.content}</p>
                                             </div>
                                         </div>
@@ -209,4 +239,4 @@ const Page = () => {
     );
 };
 
-export default Page;
+export default MessagingInterface;

@@ -1,14 +1,16 @@
 "use client";
 
-import React, {useState} from 'react';
-import {Search, Menu, Camera, Send, Mic, Settings, ArrowLeft} from 'lucide-react';
+import React, {useState} from "react";
+import {Search, Menu, Camera, Send, Mic, Settings, ArrowLeft} from "lucide-react";
+import {Conversation} from "@/utils/types/Conversation";
+
 
 const MessagingInterface = () => {
-    const [message, setMessage] = useState('');
-    const [activeConversation, setActiveConversation] = useState(null);
+    const [message, setMessage] = useState("");
+    const [activeConversation, setActiveConversation] = useState<Conversation | null>(null);
     const [showChat, setShowChat] = useState(false);
 
-    const conversations = [
+    const conversations: Conversation[] = [
         {
             id: 1,
             name: "Aurum Cartel",
@@ -20,7 +22,7 @@ const MessagingInterface = () => {
                 {
                     id: 1,
                     sender: "Personne 1",
-                    content: "Bonjour tout le monde comment allez vous cette semaine ?",
+                    content: "Bonjour tout le monde comment allez-vous cette semaine ?",
                     isMe: false
                 },
                 {
@@ -30,24 +32,7 @@ const MessagingInterface = () => {
                     isMe: true
                 },
                 {id: 3, sender: "Personne 2", content: "Bonjour, ça va tranquille", isMe: false},
-                {id: 4, sender: "Personne 3", content: "Très bien merci !", isMe: false},
-                {
-                    id: 5,
-                    sender: "Moi",
-                    content: "Super ! On pourrait peut-être organiser quelque chose ce weekend ?",
-                    isMe: true
-                },
-                {id: 6, sender: "Personne 4", content: "Super journée !", isMe: false},
-                {id: 7, sender: "Personne 5", content: "On se retrouve bientôt ?", isMe: false},
-                {id: 8, sender: "Moi", content: "Je suis libre samedi après-midi si ça vous dit !", isMe: true},
-                {id: 9, sender: "Personne 6", content: "Parfait pour moi", isMe: false},
-                {id: 10, sender: "Moi", content: "Génial ! On dit 15h au café habituel alors ?", isMe: true},
-                {id: 11, sender: "Personne 7", content: "À très vite", isMe: false},
-                {id: 12, sender: "Personne 8", content: "Excellente idée", isMe: false},
-                {id: 13, sender: "Moi", content: "Super, j'ai hâte de vous revoir tous !", isMe: true},
-                {id: 14, sender: "Personne 9", content: "Je valide", isMe: false},
-                {id: 15, sender: "Personne 10", content: "Comment allez-vous ?", isMe: false}
-            ]
+            ],
         },
         {
             id: 2,
@@ -55,29 +40,15 @@ const MessagingInterface = () => {
             message: "On se voit demain ?",
             time: "5 min",
             unread: 0,
+            isGroup: false,
             messages: [
                 {id: 1, sender: "Sandro Lu", content: "Hey, comment vas-tu ?", isMe: false},
                 {id: 2, sender: "Moi", content: "Salut Sandro ! Je vais bien, merci. Et toi ?", isMe: true},
-                {id: 3, sender: "Sandro Lu", content: "On se voit demain ?", isMe: false},
-                {id: 4, sender: "Moi", content: "Oui, avec plaisir ! À quelle heure tu préfères ?", isMe: true}
-            ]
-        },
-        {
-            id: 3,
-            name: "Marie K.",
-            message: "Super, merci!",
-            time: "15 min",
-            unread: 1,
-            messages: [
-                {id: 1, sender: "Marie K.", content: "Merci pour hier", isMe: false},
-                {id: 2, sender: "Moi", content: "C'était super ! On remet ça bientôt ?", isMe: true},
-                {id: 3, sender: "Marie K.", content: "Super, merci!", isMe: false},
-                {id: 4, sender: "Moi", content: "Je suis libre la semaine prochaine si tu veux !", isMe: true}
-            ]
+            ],
         },
     ];
 
-    const handleConversationClick = (conversation) => {
+    const handleConversationClick = (conversation: Conversation) => {
         setActiveConversation(conversation);
         setShowChat(true);
         conversation.unread = 0;
@@ -91,7 +62,10 @@ const MessagingInterface = () => {
         <div className="flex h-screen bg-zinc-900 text-white">
             {/* Sidebar - Liste des conversations */}
             <div
-                className={`w-full md:w-80 border-r border-zinc-800 flex flex-col ${showChat ? 'hidden md:flex' : 'flex'}`}>
+                className={`w-full md:w-80 border-r border-zinc-800 flex flex-col ${
+                    showChat ? "hidden md:flex" : "flex"
+                }`}
+            >
                 {/* Header */}
                 <div className="p-4 border-b border-zinc-800 flex items-center justify-between">
                     <h1 className="text-xl font-bold text-[#D4AF37]">Messages</h1>
@@ -123,8 +97,9 @@ const MessagingInterface = () => {
                         <button
                             key={conv.id}
                             onClick={() => handleConversationClick(conv)}
-                            className={`w-full text-left flex items-center p-4 hover:bg-zinc-800 cursor-pointer transition-colors
-                            ${activeConversation?.id === conv.id ? 'bg-zinc-800' : ''}`}
+                            className={`w-full text-left flex items-center p-4 hover:bg-zinc-800 cursor-pointer transition-colors ${
+                                activeConversation?.id === conv.id ? "bg-zinc-800" : ""
+                            }`}
                         >
                             <div className="relative">
                                 <div className="w-12 h-12 bg-[#D4AF37] rounded-full flex items-center justify-center">
@@ -154,10 +129,10 @@ const MessagingInterface = () => {
             </div>
 
             {/* Zone de chat */}
-            <div className={`flex-1 flex flex-col ${showChat ? 'flex' : 'hidden md:flex'}`}>
+            <div className={`flex-1 flex flex-col ${showChat ? "flex" : "hidden md:flex"}`}>
                 {activeConversation ? (
                     <>
-                        {/* Header du chat - Fixed */}
+                        {/* Header du chat */}
                         <div className="p-4 border-b border-zinc-800 flex items-center bg-zinc-900">
                             <button
                                 onClick={handleBackClick}
@@ -181,23 +156,37 @@ const MessagingInterface = () => {
                             </div>
                         </div>
 
-                        {/* Container principal avec flex-1 et flex-col */}
+                        {/* Contenu du chat */}
                         <div className="flex-1 flex flex-col overflow-hidden">
-                            {/* Messages avec flex-1 et overflow-y-auto */}
                             <div className="flex-1 overflow-y-auto">
                                 <div className="p-4 space-y-4">
                                     {activeConversation.messages.map((msg) => (
-                                        <div key={msg.id}
-                                             className={`flex items-start gap-4 ${msg.isMe ? 'flex-row-reverse' : ''}`}>
+                                        <div
+                                            key={msg.id}
+                                            className={`flex items-start gap-4 ${msg.isMe ? "flex-row-reverse" : ""}`}
+                                        >
                                             <div
                                                 className="w-8 h-8 bg-[#D4AF37] rounded-full flex items-center justify-center">
                                                 <span className="text-zinc-900 text-sm">
-                                                    {msg.isMe ? '👤' : (activeConversation.isGroup ? '👥' : '👤')}
+                                                    {msg.isMe
+                                                        ? "👤"
+                                                        : activeConversation.isGroup
+                                                            ? "👥"
+                                                            : "👤"}
                                                 </span>
                                             </div>
                                             <div
-                                                className={`rounded-lg p-3 max-w-md ${msg.isMe ? 'bg-[#D4AF37] text-zinc-900' : 'bg-zinc-800 text-white'}`}>
-                                                <p className={`text-sm font-semibold mb-1 ${msg.isMe ? 'text-zinc-900' : 'text-[#D4AF37]'}`}>
+                                                className={`rounded-lg p-3 max-w-md ${
+                                                    msg.isMe
+                                                        ? "bg-[#D4AF37] text-zinc-900"
+                                                        : "bg-zinc-800 text-white"
+                                                }`}
+                                            >
+                                                <p
+                                                    className={`text-sm font-semibold mb-1 ${
+                                                        msg.isMe ? "text-zinc-900" : "text-[#D4AF37]"
+                                                    }`}
+                                                >
                                                     {msg.sender}
                                                 </p>
                                                 <p>{msg.content}</p>
@@ -207,7 +196,7 @@ const MessagingInterface = () => {
                                 </div>
                             </div>
 
-                            {/* Zone de saisie - Fixed at bottom */}
+                            {/* Zone de saisie */}
                             <div className="p-4 border-t border-zinc-800 bg-zinc-900">
                                 <div className="flex items-center bg-zinc-800 rounded-lg px-4 py-2">
                                     <input
