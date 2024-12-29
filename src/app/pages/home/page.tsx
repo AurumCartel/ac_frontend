@@ -1,53 +1,18 @@
 "use client";
 
-import {useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 import useTitle from "@/hooks/useTitle";
 import {FaUsers} from "react-icons/fa";
 import {ImStatsDots} from "react-icons/im";
 import HeroSection from "@/components/HeroSection";
 import ProfileSection from "@/components/ProfileSection";
-
-// Composant Shimmer réutilisable
-const Shimmer = ({className}) => (
-    <div
-        className={`animate-shimmer bg-gradient-to-r from-zinc-800/50 via-zinc-700/50 to-zinc-800/50 bg-[length:400%_100%] ${className}`}/>
-);
-
-// Composant pour le shimmer des stats
-const StatShimmer = () => (
-    <div className="bg-zinc-800/50 rounded-lg p-6">
-        <div className="flex items-center justify-center gap-6">
-            <Shimmer className="w-12 h-12 rounded"/>
-            <div className="h-16 w-0.5 bg-zinc-600"/>
-            <div className="text-start space-y-2">
-                <Shimmer className="w-20 h-8 rounded"/>
-                <Shimmer className="w-16 h-6 rounded"/>
-            </div>
-        </div>
-    </div>
-);
-
-// Composant pour le shimmer du profil
-const ProfileShimmer = () => (
-    <div className="flex flex-col md:flex-row gap-8 items-center bg-zinc-800/50 rounded-lg p-8">
-        <Shimmer className="w-64 h-64 rounded-full"/>
-        <div className="flex-1 space-y-4">
-            <Shimmer className="w-48 h-8 rounded"/>
-            <div className="space-y-2">
-                <Shimmer className="w-full h-4 rounded"/>
-                <Shimmer className="w-full h-4 rounded"/>
-                <Shimmer className="w-3/4 h-4 rounded"/>
-            </div>
-        </div>
-    </div>
-);
+import {Shimmer, StatShimmer, ProfileShimmer} from "@/components/Shimmer";
 
 export default function Page() {
     useTitle("Accueil");
     const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
-        // Simuler un temps de chargement
         const timer = setTimeout(() => {
             setIsLoading(false);
         }, 2000);
