@@ -1,4 +1,5 @@
 "use client";
+
 import useTitle from "@/hooks/useTitle";
 import {FaUsers} from "react-icons/fa";
 import {ImStatsDots} from "react-icons/im";
