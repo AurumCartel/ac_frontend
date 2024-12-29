@@ -8,12 +8,12 @@ export default function Page() {
   return (
     <>
       <main className=" flex-grow text-white">
-        <div className="text-center mb-8">
-          <h3 className="text-5xl mb-3">Analyse fondamentale</h3>
+        <div className="text-center mt-5 mb-7">
+          <h3 className="text-5xl mb-5">Analyse fondamentale</h3>
           <p className="text-center">
             Rep&eacute;rez les points de retournement en identifiant trois
             interactions cl&eacute;s entre le prix et les niveaux de support ou
-            de r&eacute;sistance. Une m&eacute;thode id&eacute;ale pour
+            de r&eacute;sistance. <br /> Une m&eacute;thode id&eacute;ale pour
             anticiper les changements de tendance.
           </p>
         </div>
