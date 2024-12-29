@@ -1,8 +1,16 @@
+"use client";
+import useTitle from "@/hooks/useTitle";
+import Image from "next/image";
+import Link from "next/link";
+import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
+import { CgMail } from "react-icons/cg";
+
 export default function Login() {
+  useTitle("Login");
   return (
     <>
-      {/* <main className="font-gothic flex justify-center items-center min-h-screen bg-[#1E1E1E]">
-        <div className="grid grid-cols-2 gap-20 p-6 rounded-lg border border-[#D4AF37] text-white">
+      <main className=" flex justify-center items-center min-h-screen bg-[#1E1E1E]">
+        <div className="grid grid-cols-2 gap-20 p-6 rounded-lg  border-2 border-[#D4AF37] text-white">
           <div>
             <h1 className="text-2xl text-center font-bold mb-6">
               Ravi de vous revoir sur{" "}
@@ -19,9 +27,14 @@ export default function Login() {
               />
             </div>
             <div className="text-center mt-4">
-              <button className="w-full bg-transparent text-[#D4AF37] border border-[#D4AF37] font-bold py-2 rounded-lg hover:bg-[#D4AF37] hover:text-black transition">
-                S&apos;inscrire
-              </button>
+              <Link
+                href="register"
+                className="text-zinc-300 hover:text-[#D4AF37] transition-colors duration-300"
+              >
+                <button className="w-full bg-transparent text-[#D4AF37] border-2 border-[#D4AF37] font-bold py-2 rounded-lg hover:bg-[#D4AF37] hover:text-black transition">
+                  S&apos;inscrire
+                </button>
+              </Link>
             </div>
           </div>
 
@@ -36,7 +49,7 @@ export default function Login() {
                     type="email"
                     id="email"
                     placeholder="Entrez votre adresse e-mail"
-                    className="w-full px-4 py-2 bg-transparent border border-[#D4AF37] rounded-lg focus:outline-none"
+                    className="w-full px-4 py-2 bg-transparent border-2 border-[#D4AF37] rounded-lg focus:outline-none"
                   />
                   <span className="absolute inset-y-0 right-3 flex items-center">
                     <CgMail className="text-[#D4AF37]" />
@@ -53,7 +66,7 @@ export default function Login() {
                     type="password"
                     id="password"
                     placeholder="Entrez votre mot de passe"
-                    className="w-full px-4 py-2 bg-transparent border border-[#D4AF37] rounded-lg focus:outline-none"
+                    className="w-full px-4 py-2 bg-transparent border-2 border-[#D4AF37] rounded-lg focus:outline-none"
                   />
                   <button
                     type="button"
@@ -70,17 +83,21 @@ export default function Login() {
                   Mot de passe oubli&eacute; ?
                 </a>
               </div>
-
-              <button
-                type="submit"
-                className="w-full bg-[#D4AF37] text-black font-bold py-2 rounded-lg mt-4 hover:bg-yellow-500 transition"
+              <Link
+                href="//home"
+                className="text-zinc-300 hover:text-[#D4AF37] transition-colors duration-300"
               >
-                Se connecter
-              </button>
+                <button
+                  type="submit"
+                  className="w-full bg-[#D4AF37] hover:transition hover:text-white text-black font-bold py-2 rounded-lg mt-4 hover:bg-yellow-500 transition"
+                >
+                  Se connecter
+                </button>
+              </Link>
             </form>
           </div>
         </div>
-      </main> */}
+      </main>
     </>
   );
 }
