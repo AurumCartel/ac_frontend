@@ -1,6 +1,5 @@
 "use client";
 import useTitle from "@/hooks/useTitle";
-import { useRef } from "react";
 
 export default function Page() {
   useTitle("Analyse");

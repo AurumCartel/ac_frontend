@@ -2,20 +2,22 @@
 import useTitle from "@/hooks/useTitle";
 import Image from "next/image";
 import Link from "next/link";
+import { useState } from "react";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import { CgMail } from "react-icons/cg";
 
 export default function Login() {
+  const [isVisible, setIsVisible] = useState(false);
   useTitle("Login");
   return (
     <>
-      <main className=" flex justify-center items-center min-h-screen bg-[#1E1E1E]">
+      <main className=" flex justify-center items-center min-h-screen ">
         <div className="grid grid-cols-2 gap-20 p-6 rounded-lg  border-2 border-[#D4AF37] text-white">
           <div>
             <h1 className="text-2xl text-center font-bold mb-6">
-              Ravi de vous revoir sur{" "}
-              <span className="text-[#D4AF37]">le site</span> de la
-              communaut&eacute;
+              Ravi de vous revoir sur le site de la communaut&eacute;
+              <br />
+              <span className="text-5xl text-[#D4AF37] ">AURUM CARTEL </span>
             </h1>
 
             <div className="flex justify-center mb-6">
@@ -41,7 +43,7 @@ export default function Login() {
           <div>
             <form className="space-y-4">
               <div>
-                <label htmlFor="email" className="block text-sm mb-1">
+                <label htmlFor="email" className="block text-xl mb-1">
                   Adresse e-mail
                 </label>
                 <div className="relative">
@@ -49,37 +51,44 @@ export default function Login() {
                     type="email"
                     id="email"
                     placeholder="Entrez votre adresse e-mail"
-                    className="w-full px-4 py-2 bg-transparent border-2 border-[#D4AF37] rounded-lg focus:outline-none"
+                    className="w-full px-4 py-2 bg-transparent border-2 border-[#D4AF37] rounded-lg focus:bg-transparent"
                   />
                   <span className="absolute inset-y-0 right-3 flex items-center">
-                    <CgMail className="text-[#D4AF37]" />
+                    <CgMail className="text-[#D4AF37] text-4xl " />
                   </span>
                 </div>
               </div>
 
               <div>
-                <label htmlFor="password" className="block text-sm mb-1">
+                <label htmlFor="password" className="block text-xl mb-1">
                   Mot de passe
                 </label>
                 <div className="relative">
                   <input
-                    type="password"
+                    type={isVisible ? "text" : "password"}
                     id="password"
                     placeholder="Entrez votre mot de passe"
-                    className="w-full px-4 py-2 bg-transparent border-2 border-[#D4AF37] rounded-lg focus:outline-none"
+                    className="w-full px-4 py-2 bg-transparent border-2 border-[#D4AF37] rounded-lg focus:bg-transparent"
                   />
                   <button
                     type="button"
+                    onClick={() => setIsVisible(!isVisible)}
                     className="absolute inset-y-0 right-3 flex items-center"
                   >
-                    <AiOutlineEye className="text-[#D4AF37]" />
-                    <AiOutlineEyeInvisible />
+                    {isVisible ? (
+                      <AiOutlineEyeInvisible className="text-4xl" />
+                    ) : (
+                      <AiOutlineEye className="text-[#D4AF37] text-4xl" />
+                    )}
                   </button>
                 </div>
               </div>
 
-              <div className="flex justify-between items-center text-sm mt-2">
-                <a href="#" className="text-[#D4AF37] hover:underline">
+              <div className="text-xl text-right mt-2">
+                <a
+                  href="#"
+                  className="text-[#D4AF37] hover:underline text-right"
+                >
                   Mot de passe oubli&eacute; ?
                 </a>
               </div>
