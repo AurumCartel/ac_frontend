@@ -3,18 +3,19 @@ import { AiFillCloseCircle } from "react-icons/ai";
 import { AiFillCheckCircle } from "react-icons/ai";
 
 import Image from "next/image";
-import Link from "next/link";
 import { useState } from "react";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import Modal from "@/components/Modal";
 import StepperAnimation from "@/components/StepperAnimation";
 import useTitle from "@/hooks/useTitle";
+import { useRouter } from "next/navigation";
 
 export default function Register() {
   useTitle("Inscription");
   const [isVisible, setIsVisible] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [currentStep, setCurrentStep] = useState(1);
+  const router = useRouter();
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -37,7 +38,9 @@ export default function Register() {
     isValidLenght: false,
   });
   const [error, setError] = useState(false);
-
+  const handleLogin = () => {
+    router.push(`/auth/login`);
+  };
   const steps = ["1", "2", "3"];
 
   const handleNext = () => {
@@ -73,18 +76,6 @@ export default function Register() {
       isValidLenght: password.length >= 8,
     });
   };
-  // const isStepComplete = () => {
-  //   if (currentStep === 1)
-  //     return (
-  //       formData.name &&
-  //       formData.email &&
-  //       formData.password &&
-  //       formData.confirmPassword
-  //     );
-  //   if (currentStep === 2)
-  //     return formData.address && formData.phone && formData.city;
-  //   return true;
-  // };
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center">
@@ -358,21 +349,6 @@ export default function Register() {
             >
               Précédent
             </button>
-            {/* {currentStep < 3 ? (
-              <button
-                onClick={handleNext}
-                disabled={!isStepComplete()}
-                className={`px-4 py-2 rounded ${
-                  isStepComplete() ? "bg-blue-500 text-white" : "bg-gray-300"
-                }`}
-              >
-                Suivant
-              </button>
-            ) : (
-              <button className="px-4 py-2 bg-green-500 text-white rounded">
-                Terminer
-              </button>
-            )} */}
             <button
               onClick={handleNext}
               className="px-4 py-2 bg-blue-500 text-white rounded"
@@ -397,20 +373,33 @@ export default function Register() {
             />
           </div>
           <div className="text-center mt-4">
-            <Link
-              href="login"
-              className="text-zinc-300 hover:text-[#D4AF37] transition-colors duration-300"
+            <button
+              onClick={handleLogin}
+              className="w-full hover:text-black duration-300 bg-transparent text-[#D4AF37] border-2 border-[#D4AF37] font-bold py-2 rounded-lg hover:bg-[#D4AF37] hover: transition"
             >
-              <button className="w-full bg-transparent text-[#D4AF37] border-2 border-[#D4AF37] font-bold py-2 rounded-lg hover:bg-[#D4AF37] hover: transition">
-                Se connecter
-              </button>
-            </Link>
+              Se connecter
+            </button>
           </div>
         </div>
         {/* Modal */}
         <Modal isOpen={showModal} onClose={() => setShowModal(false)}>
-          <h2 className="text-xl font-bold mb-4">Inscription terminée !</h2>
-          <p>Merci de vous être inscrit à notre plateforme.</p>
+          <Image
+            src="/assets/images/Ac2.jpg"
+            width={200}
+            height={200}
+            alt="AurumCartel"
+          />
+          <h1 className="text-[#D4AF37] text-center font-bold text-4xl mb-4 mt-4">
+            AURUM CARTEL
+          </h1>
+          <h2 className="text-xl font-bold mb-4 text-center">
+            Inscription envoyer &agrave; l&apos;administrateur !
+          </h2>
+          <p className="text-center">
+            Merci de vous être inscrit à notre
+            <br />
+            Veuiller patienter.......
+          </p>
         </Modal>
       </div>
     </div>
