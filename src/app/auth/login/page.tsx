@@ -26,15 +26,15 @@ export default function Login() {
     router.push(`/auth/register`);
   };
   return (
-    <main className=" flex justify-center items-center min-h-screen ">
+    <>
       {isLoading ? (
         <>
-          <div className="space-y-4 mb-16">
+          <div className="flex items-center justify-center ">
             <LoginShimmer />
           </div>
         </>
       ) : (
-        <>
+        <main className=" flex justify-center items-center min-h-screen ">
           <div className="grid grid-cols-2 gap-20 p-6 rounded-lg  border-2 border-[#D4AF37] text-white">
             <div>
               <h1 className="text-2xl text-center font-bold mb-6">
@@ -127,8 +127,8 @@ export default function Login() {
               </form>
             </div>
           </div>
-        </>
+        </main>
       )}
-    </main>
+    </>
   );
 }

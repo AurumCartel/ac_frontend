@@ -80,9 +80,10 @@ const ProfileShimmer = () => (
 /////Add by elvestino
 // shimmer pour le login
 const LoginShimmer = () => (
-  <div className="flex md:flex-row gap-8 bg-zinc-800/50 rounded-lg p-8">
+  <div className="flex m-4 md:flex-row gap-8 bg-zinc-800/50 rounded-lg p-8">
     {/* Image de profil */}
     <div className="relative w-64 h-64">
+      <Shimmer className="w-full h-10 rounded" />
       <Shimmer className="w-full h-full rounded-full" />
     </div>
 
