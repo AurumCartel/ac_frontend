@@ -1,0 +1,6 @@
+import {VideoLesson} from './video';
+
+export interface CourseDetailsProps {
+    videoLessons: VideoLesson[];
+    defaultVideoId?: number;
+}
