@@ -2,9 +2,11 @@
 
 import React from "react";
 import useTitle from "@/hooks/useTitle";
+import useScrollToTop from "@/hooks/useScrollToTop";
 
 export default function Page() {
     useTitle("Gestion Cours");
+    useScrollToTop();
 
     return (
         <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex-grow">

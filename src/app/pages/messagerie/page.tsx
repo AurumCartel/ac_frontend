@@ -5,6 +5,7 @@ import {Search, Camera, Send, Mic, Settings, ArrowLeft, Plus, Users, User, Bell,
 import {Conversation} from "@/utils/types/Conversation";
 import useTitle from "@/hooks/useTitle";
 import {AvatarProps} from "@/utils/types/Avatar";
+import useScrollToTop from "@/hooks/useScrollToTop";
 
 const Avatar: React.FC<AvatarProps> = ({isGroup, size = "large", className = ""}) => {
     const sizeClasses: Record<'large' | 'small', string> = {
@@ -22,6 +23,7 @@ const Avatar: React.FC<AvatarProps> = ({isGroup, size = "large", className = ""}
 
 const MessagingInterface = () => {
     useTitle("Messages");
+    useScrollToTop();
     const [message, setMessage] = useState("");
     const [activeConversation, setActiveConversation] = useState<Conversation | null>(null);
     const [showChat, setShowChat] = useState(false);

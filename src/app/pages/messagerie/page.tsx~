@@ -1,136 +1,274 @@
 "use client";
 
-import React, {useState} from 'react';
+import React, {useState} from "react";
+import {Search, Camera, Send, Mic, Settings, ArrowLeft, Plus, Users, User, Bell, MessageSquare} from "lucide-react";
+import {Conversation} from "@/utils/types/Conversation";
 import useTitle from "@/hooks/useTitle";
-import {Play, Clock, ChevronRight, BookOpen, PlayCircle} from "lucide-react";
-import {Card, CardContent} from "@/components/ui/card";
+import {AvatarProps} from "@/utils/types/Avatar";
 
-interface VideoLesson {
-    id: number;
-    title: string;
-    duration: string;
-    description: string;
-    videoUrl: string;
-}
-
-// Données simulées - À remplacer par un appel API
-const videoLessons: VideoLesson[] = [
-    {
-        id: 1,
-        title: "Repérez les points de retournement tendance",
-        duration: "30:54",
-        description: "L'analyse fondamentale se penche sur les bases économiques et financières qui influencent la valeur d'un actif. En explorant des facteurs tels que les indicateurs macroéconomiques, les performances sectorielles, les rapports financiers des entreprises et les événements mondiaux, cette approche…",
-        videoUrl: "/assets/videos/Johane_Aleoko_misintaka.mkv"
-    },
-    {
-        id: 2,
-        title: "Analyse des supports et résistances",
-        duration: "25:30",
-        description: "Suite de l'analyse fondamentale...",
-        videoUrl: "/assets/videos/Johane_Aleoko_misintaka.mkv"
-    },
-    {
-        id: 3,
-        title: "Identification des niveaux clés",
-        duration: "28:15",
-        description: "Conclusion de l'analyse fondamentale...",
-        videoUrl: "/assets/videos/Johane_Aleoko_misintaka.mkv"
-    }
-];
-
-export default function Page() {
-    useTitle("Analyse Fondamentale");
-    const [selectedVideo, setSelectedVideo] = useState(videoLessons[0]);
-    const [isDescriptionExpanded, setIsDescriptionExpanded] = useState(false);
+const Avatar: React.FC<AvatarProps> = ({isGroup, size = "large", className = ""}) => {
+    const sizeClasses: Record<'large' | 'small', string> = {
+        large: "w-12 h-12 text-lg",
+        small: "w-8 h-8 text-sm"
+    };
 
     return (
-        <main className="min-h-screen bg-black text-white px-4 md:px-8 py-6">
-            {/* Header Section */}
-            <div className="text-center max-w-4xl mx-auto mb-12">
-                <h1 className="text-3xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-[#D4AF37] to-yellow-500 bg-clip-text text-transparent">
-                    Analyse fondamentale
-                </h1>
-                <p className="text-gray-300 text-sm md:text-base">
-                    Repérez les points de retournement en identifiant trois interactions clés
-                    entre le prix et les niveaux de support ou de résistance. Une méthode idéale
-                    pour anticiper les changements de tendance.
-                </p>
-            </div>
+        <div
+            className={`${sizeClasses[size]} bg-[#D4AF37] rounded-full flex items-center justify-center flex-shrink-0 ${className} transition-transform hover:scale-105`}>
+            {isGroup ? <Users className="text-zinc-900 w-6 h-6"/> : <User className="text-zinc-900 w-6 h-6"/>}
+        </div>
+    );
+};
 
-            {/* Main Content Grid */}
-            <div className="grid lg:grid-cols-3 gap-8">
-                {/* Main Video Section */}
-                <div className="lg:col-span-2">
-                    <Card className="bg-gray-900 border-none">
-                        <CardContent className="p-0">
-                            <div className="aspect-video relative">
-                                <video
-                                    key={selectedVideo.id}
-                                    controls
-                                    className="w-full h-full rounded-t-lg"
-                                    src={selectedVideo.videoUrl}
-                                />
-                            </div>
-                            <div className="p-6">
-                                <h2 className="text-xl md:text-2xl font-semibold mb-4 flex items-center gap-2">
-                                    <PlayCircle className="text-[#D4AF37]"/>
-                                    {selectedVideo.title}
-                                </h2>
-                                <p className={`text-gray-300 text-sm md:text-base ${!isDescriptionExpanded && 'line-clamp-3'}`}>
-                                    {selectedVideo.description}
-                                </p>
-                                <button
-                                    onClick={() => setIsDescriptionExpanded(!isDescriptionExpanded)}
-                                    className="text-[#D4AF37] hover:text-yellow-500 mt-2 text-sm flex items-center gap-1"
-                                >
-                                    {isDescriptionExpanded ? 'Voir moins' : 'Voir plus'}
-                                    <ChevronRight className="w-4 h-4"/>
-                                </button>
-                            </div>
-                        </CardContent>
-                    </Card>
+const MessagingInterface = () => {
+    useTitle("Messages");
+    const [message, setMessage] = useState("");
+    const [activeConversation, setActiveConversation] = useState<Conversation | null>(null);
+    const [showChat, setShowChat] = useState(false);
+
+    // ... rest of your conversations data ...
+    const conversations: Conversation[] = [
+        {
+            id: 1,
+            name: "Aurum Cartel",
+            message: "Salut tout le monde!",
+            time: "1 min",
+            unread: 2,
+            isGroup: true,
+            messages: [
+                {
+                    id: 1,
+                    sender: "Personne 1",
+                    content: "Bonjour tout le monde comment allez-vous cette semaine ?",
+                    isMe: false
+                },
+                {
+                    id: 2,
+                    sender: "Moi",
+                    content: "Bonjour à tous ! Je vais très bien, merci. J'espère que vous aussi ?",
+                    isMe: true
+                },
+                {id: 3, sender: "Personne 2", content: "Bonjour, ça va tranquille", isMe: false},
+            ],
+        },
+        {
+            id: 2,
+            name: "Sandro Lu",
+            message: "On se voit demain ?",
+            time: "5 min",
+            unread: 0,
+            isGroup: false,
+            messages: [
+                {id: 1, sender: "Sandro Lu", content: "Hey, comment vas-tu ?", isMe: false},
+                {id: 2, sender: "Moi", content: "Salut Sandro ! Je vais bien, merci. Et toi ?", isMe: true},
+            ],
+        },
+    ];
+
+    const handleConversationClick = (conversation: Conversation) => {
+        setActiveConversation(conversation);
+        setShowChat(true);
+        conversation.unread = 0;
+    };
+
+    const handleBackClick = () => {
+        setShowChat(false);
+    };
+
+    const handleSendMessage = () => {
+        if (!message.trim()) return;
+        // Add message sending logic here
+        setMessage("");
+    };
+
+    const handleKeyPress = (e: React.KeyboardEvent) => {
+        if (e.key === 'Enter' && !e.shiftKey) {
+            e.preventDefault();
+            handleSendMessage();
+        }
+    };
+
+    return (
+        <div className="flex h-screen bg-zinc-900 text-white">
+            {/* Sidebar */}
+            <div
+                className={`w-full md:w-96 border-r border-zinc-800/50 flex flex-col ${
+                    showChat ? "hidden md:flex" : "flex"
+                }`}
+            >
+                {/* Header */}
+                <div className="p-6 border-b border-zinc-800/50 flex items-center justify-between">
+                    <div className="flex items-center gap-3">
+                        <h1 className="text-2xl font-bold text-[#D4AF37]">Messages</h1>
+                        <span className="text-sm text-zinc-400">3 non lus</span>
+                    </div>
+                    <div className="flex gap-3">
+                        <button
+                            className="p-2.5 hover:bg-zinc-800/80 rounded-full text-[#D4AF37] transition-colors duration-200">
+                            <Bell size={20}/>
+                        </button>
+                        <button
+                            className="p-2.5 hover:bg-zinc-800/80 rounded-full text-[#D4AF37] transition-colors duration-200">
+                            <Plus size={20}/>
+                        </button>
+                    </div>
                 </div>
 
-                {/* Playlist Section */}
-                <div className="space-y-4">
-                    <h3 className="text-lg font-semibold flex items-center gap-2 mb-4">
-                        <BookOpen className="text-[#D4AF37]"/>
-                        Playlist du cours
-                    </h3>
-                    {videoLessons.map((lesson, index) => (
-                        <Card
-                            key={lesson.id}
-                            className={`bg-gray-900 border-none cursor-pointer transform transition hover:scale-102 ${
-                                selectedVideo.id === lesson.id ? 'ring-2 ring-[#D4AF37]' : ''
+                {/* Recherche */}
+                <div className="p-6">
+                    <div
+                        className="flex items-center bg-zinc-800/50 rounded-xl px-4 py-3 focus-within:ring-2 ring-[#D4AF37]/20 transition-all duration-200">
+                        <Search size={20} className="text-[#D4AF37]"/>
+                        <input
+                            type="text"
+                            placeholder="Rechercher une conversation..."
+                            className="bg-transparent border-none focus:outline-none ml-3 w-full text-sm placeholder-zinc-400"
+                        />
+                    </div>
+                </div>
+
+                {/* Liste des conversations */}
+                <div className="flex-1 overflow-y-auto px-3">
+                    {conversations.map((conv) => (
+                        <button
+                            key={conv.id}
+                            onClick={() => handleConversationClick(conv)}
+                            className={`w-full text-left flex items-center p-4 hover:bg-zinc-800/50 rounded-xl cursor-pointer transition-all duration-200 mb-2 ${
+                                activeConversation?.id === conv.id ? "bg-zinc-800/50 ring-1 ring-[#D4AF37]/20" : ""
                             }`}
-                            onClick={() => setSelectedVideo(lesson)}
                         >
-                            <CardContent className="p-4">
-                                <div className="flex gap-4">
-                                    <div className="relative w-32 h-20 flex-shrink-0">
-                                        <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
-                                            <Play className="w-8 h-8 text-[#D4AF37]"/>
-                                        </div>
-                                        <video
-                                            className="w-full h-full object-cover rounded"
-                                            src={lesson.videoUrl}
-                                        />
-                                    </div>
-                                    <div className="flex-1">
-                                        <p className="font-medium text-sm mb-2">
-                                            {index + 1}. {lesson.title}
-                                        </p>
-                                        <div className="flex items-center text-gray-400 text-xs">
-                                            <Clock className="w-4 h-4 mr-1"/>
-                                            {lesson.duration}
-                                        </div>
-                                    </div>
+                            <div className="relative">
+                                <Avatar isGroup={conv.isGroup} size="large"/>
+                                {conv.unread > 0 && (
+                                    <span
+                                        className="absolute -top-1 -right-1 bg-[#D4AF37] text-zinc-900 text-xs rounded-full w-5 h-5 flex items-center justify-center font-semibold shadow-lg">
+                                        {conv.unread}
+                                    </span>
+                                )}
+                            </div>
+                            <div className="ml-4 flex-1 min-w-0">
+                                <div className="flex justify-between items-center mb-1">
+                                    <h2 className="font-semibold text-[#D4AF37] truncate">{conv.name}</h2>
+                                    <span className="text-xs text-zinc-400 ml-2 flex-shrink-0">{conv.time}</span>
                                 </div>
-                            </CardContent>
-                        </Card>
+                                <p className="text-sm text-zinc-400 truncate">{conv.message}</p>
+                            </div>
+                        </button>
                     ))}
                 </div>
             </div>
-        </main>
+
+            {/* Zone de chat */}
+            <div className={`flex-1 flex flex-col ${showChat ? "flex" : "hidden md:flex"}`}>
+                {activeConversation ? (
+                    <>
+                        {/* Header du chat */}
+                        <div
+                            className="px-6 py-4 border-b border-zinc-800/50 flex items-center bg-zinc-900/95 backdrop-blur supports-[backdrop-filter]:bg-zinc-900/75">
+                            <button
+                                onClick={handleBackClick}
+                                className="md:hidden p-2.5 hover:bg-zinc-800/80 rounded-full text-[#D4AF37] mr-2 transition-colors duration-200"
+                            >
+                                <ArrowLeft size={20}/>
+                            </button>
+                            <Avatar isGroup={activeConversation.isGroup} size="small" className="mr-4"/>
+                            <div className="flex-1">
+                                <h2 className="font-semibold text-[#D4AF37] mb-0.5">{activeConversation.name}</h2>
+                                <p className="text-sm text-zinc-400">
+                                    {activeConversation.isGroup ? "312 membres, 56 en ligne" : "En ligne"}
+                                </p>
+                            </div>
+                            <div className="flex gap-2">
+                                <button
+                                    className="p-2.5 hover:bg-zinc-800/80 rounded-full text-[#D4AF37] transition-colors duration-200">
+                                    <Camera size={20}/>
+                                </button>
+                                <button
+                                    className="p-2.5 hover:bg-zinc-800/80 rounded-full text-[#D4AF37] transition-colors duration-200">
+                                    <Settings size={20}/>
+                                </button>
+                            </div>
+                        </div>
+
+                        {/* Contenu du chat */}
+                        <div className="flex-1 flex flex-col overflow-hidden">
+                            <div className="flex-1 overflow-y-auto">
+                                <div className="p-6 space-y-6">
+                                    {activeConversation.messages.map((msg) => (
+                                        <div
+                                            key={msg.id}
+                                            className={`flex items-start gap-4 ${msg.isMe ? "flex-row-reverse" : ""} group`}
+                                        >
+                                            <Avatar
+                                                isGroup={!msg.isMe && activeConversation.isGroup}
+                                                size="small"
+                                                className={msg.isMe ? "order-1" : "order-none"}
+                                            />
+                                            <div className="w-96"> {/* Container fixe pour les messages */}
+                                                <div
+                                                    className={`rounded-2xl p-4 w-full shadow-sm ${
+                                                        msg.isMe
+                                                            ? "bg-[#D4AF37] text-zinc-900"
+                                                            : "bg-zinc-800/50 text-white"
+                                                    }`}
+                                                >
+                                                    <p
+                                                        className={`text-sm font-semibold mb-1 ${
+                                                            msg.isMe ? "text-zinc-900" : "text-[#D4AF37]"
+                                                        }`}
+                                                    >
+                                                        {msg.sender}
+                                                    </p>
+                                                    <p className="leading-relaxed break-words">{msg.content}</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+
+                            {/* Zone de saisie */}
+                            <div
+                                className="p-6 border-t border-zinc-800/50 bg-zinc-900/95 backdrop-blur supports-[backdrop-filter]:bg-zinc-900/75">
+                                <div
+                                    className="flex items-center bg-zinc-800/50 rounded-xl px-4 py-3 focus-within:ring-2 ring-[#D4AF37]/20 transition-all duration-200">
+                                    <input
+                                        type="text"
+                                        placeholder="Écrivez votre message..."
+                                        className="flex-1 bg-transparent border-none focus:outline-none placeholder-zinc-400"
+                                        value={message}
+                                        onChange={(e) => setMessage(e.target.value)}
+                                        onKeyDown={handleKeyPress}
+                                    />
+                                    <div className="flex items-center gap-3 ml-3">
+                                        <button
+                                            className="p-2 hover:bg-zinc-700/50 rounded-full text-[#D4AF37] transition-colors duration-200">
+                                            <Mic size={20}/>
+                                        </button>
+                                        <button
+                                            onClick={handleSendMessage}
+                                            disabled={!message.trim()}
+                                            className="p-2 hover:bg-zinc-700/50 rounded-full text-[#D4AF37] transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+                                        >
+                                            <Send size={20}/>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </>
+                ) : (
+                    <div className="flex-1 flex flex-col items-center justify-center text-zinc-400 p-6">
+                        <div className="w-16 h-16 bg-zinc-800/50 rounded-full flex items-center justify-center mb-4">
+                            <MessageSquare size={32} className="text-[#D4AF37]"/>
+                        </div>
+                        <p className="text-lg font-medium mb-2">Vos messages</p>
+                        <p className="text-sm text-zinc-500">Sélectionnez une conversation pour commencer</p>
+                    </div>
+                )}
+            </div>
+        </div>
     );
-}
+};
+
+export default MessagingInterface;

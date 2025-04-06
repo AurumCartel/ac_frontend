@@ -2,22 +2,21 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { useState } from "react";
-import { Menu, X } from "lucide-react";
+import {usePathname} from "next/navigation";
+import {useState} from "react";
+import {Menu, X} from "lucide-react";
 
 export default function Header() {
     const pathname = usePathname();
     const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-    // Simulation de l'état de l'utilisateur connecté et administrateur
+    // Simulation de l'état de l'utilisateur connecté
     const isUserLoggedIn = true; // Remplacer par true pour simuler un utilisateur connecté
-    const isAdmin = true; // Remplacer par true pour simuler un administrateur
 
     const navigation = [
-        { name: "Accueil", href: "/pages/home" },
-        { name: "Cours", href: "/pages/cours" },
-        { name: "Messagerie", href: "/pages/messagerie" },
+        {name: "Accueil", href: "/pages/home"},
+        {name: "Cours", href: "/pages/cours"},
+        {name: "Messagerie", href: "/pages/messagerie"},
     ];
 
     // Fonction de redirection pour empêcher l'accès si l'utilisateur n'est pas connecté
@@ -105,9 +104,9 @@ export default function Header() {
                             className="inline-flex items-center justify-center p-2 rounded-md text-zinc-400 hover:text-white hover:bg-zinc-800 focus:outline-none"
                         >
                             {isMenuOpen ? (
-                                <X className="h-6 w-6" />
+                                <X className="h-6 w-6"/>
                             ) : (
-                                <Menu className="h-6 w-6" />
+                                <Menu className="h-6 w-6"/>
                             )}
                         </button>
                     </div>
