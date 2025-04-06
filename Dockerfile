@@ -1,0 +1,33 @@
+# Utiliser l'image officielle de Node.js 20 comme base
+FROM node:20
+
+# Définir le répertoire de travail
+WORKDIR /app
+
+# Copier package.json et package-lock.json
+COPY package*.json ./
+
+# Installer toutes les dépendances (y compris les devDependencies pour le build)
+RUN npm install
+
+# Copier tout le code source de l'application
+COPY . .
+
+# Récupérer les variables d'environnement au moment du build
+ARG NEXT_PUBLIC_API_BASE_URL_DEV
+ARG NEXT_PUBLIC_API_BASE_URL_PROD
+ARG PORT=4141
+
+# Définir les variables d'environnement pour Next.js
+ENV NEXT_PUBLIC_API_BASE_URL_DEV=${NEXT_PUBLIC_API_BASE_URL_DEV}
+ENV NEXT_PUBLIC_API_BASE_URL_PROD=${NEXT_PUBLIC_API_BASE_URL_PROD}
+ENV PORT=${PORT}
+
+# Construire l'application pour la production
+RUN npm run build
+
+# Exposer le port configuré
+EXPOSE ${PORT}
+
+# Lancer l'application Next.js
+CMD ["sh", "-c", "npm start -- -p ${PORT}"]

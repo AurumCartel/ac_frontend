@@ -1,16 +1,796 @@
 "use client";
 
-import React from "react";
+import React, { useState, useEffect } from "react";
 import useTitle from "@/hooks/useTitle";
 import useScrollToTop from "@/hooks/useScrollToTop";
+import {
+    Search,
+    Filter,
+    UserPlus,
+    ChevronLeft,
+    ChevronRight,
+    X,
+    CheckCircle,
+    XCircle,
+    Shield,
+    Settings,
+    Mail,
+    Eye,
+    Clock,
+    AlertTriangle,
+    UserCheck
+} from "lucide-react";
+
+// Types
+interface User {
+    id: string;
+    firstName: string;
+    lastName: string;
+    email: string;
+    role: "Admin" | "Enseignant" | "Étudiant";
+    status: "Actif" | "Inactif" | "En attente";
+    registeredAt: string;
+    lastLogin: string | null;
+    avatar: string | null;
+    verified: boolean;
+}
 
 export default function Page() {
     useTitle("Gestion Utilisateurs");
     useScrollToTop();
 
+    // État pour les utilisateurs
+    const [users, setUsers] = useState<User[]>([]);
+    const [isLoading, setIsLoading] = useState<boolean>(true);
+    const [selectedUser, setSelectedUser] = useState<User | null>(null);
+
+    // États pour le filtrage et la recherche
+    const [searchTerm, setSearchTerm] = useState<string>("");
+    const [filterRole, setFilterRole] = useState<string>("");
+    const [filterStatus, setFilterStatus] = useState<string>("");
+    const [filterVerified, setFilterVerified] = useState<string>("");
+    const [isFilterOpen, setIsFilterOpen] = useState<boolean>(false);
+
+    // États pour la pagination
+    const [currentPage, setCurrentPage] = useState<number>(1);
+    const [itemsPerPage, setItemsPerPage] = useState<number>(10);
+
+    // État pour le modal utilisateur
+    const [isUserModalOpen, setIsUserModalOpen] = useState<boolean>(false);
+
+    // Charger des utilisateurs fictifs
+    useEffect(() => {
+        setTimeout(() => {
+            setUsers([
+                {
+                    id: "1",
+                    firstName: "Jean",
+                    lastName: "Dupont",
+                    email: "jean.dupont@example.com",
+                    role: "Étudiant",
+                    status: "Actif",
+                    registeredAt: "2025-02-15",
+                    lastLogin: "2025-04-05 14:32:00",
+                    avatar: null,
+                    verified: true
+                },
+                {
+                    id: "2",
+                    firstName: "Marie",
+                    lastName: "Laurent",
+                    email: "marie.laurent@example.com",
+                    role: "Enseignant",
+                    status: "Actif",
+                    registeredAt: "2025-01-05",
+                    lastLogin: "2025-04-03 09:15:30",
+                    avatar: "/assets/images/user-avatar.jpg",
+                    verified: true
+                },
+                {
+                    id: "3",
+                    firstName: "Ahmed",
+                    lastName: "Bensalem",
+                    email: "ahmed.b@example.com",
+                    role: "Étudiant",
+                    status: "En attente",
+                    registeredAt: "2025-04-01",
+                    lastLogin: null,
+                    avatar: null,
+                    verified: false
+                },
+                {
+                    id: "4",
+                    firstName: "Sophie",
+                    lastName: "Martin",
+                    email: "sophie.martin@example.com",
+                    role: "Admin",
+                    status: "Actif",
+                    registeredAt: "2024-12-10",
+                    lastLogin: "2025-04-06 10:45:22",
+                    avatar: "/assets/images/admin-avatar.jpg",
+                    verified: true
+                },
+                {
+                    id: "5",
+                    firstName: "Thomas",
+                    lastName: "Richard",
+                    email: "thomas.richard@example.com",
+                    role: "Étudiant",
+                    status: "Inactif",
+                    registeredAt: "2025-01-20",
+                    lastLogin: "2025-03-15 16:22:10",
+                    avatar: null,
+                    verified: true
+                },
+                {
+                    id: "6",
+                    firstName: "Emma",
+                    lastName: "Dubois",
+                    email: "emma.dubois@example.com",
+                    role: "Étudiant",
+                    status: "En attente",
+                    registeredAt: "2025-04-03",
+                    lastLogin: null,
+                    avatar: null,
+                    verified: false
+                },
+                {
+                    id: "7",
+                    firstName: "Lucas",
+                    lastName: "Moreau",
+                    email: "lucas.moreau@example.com",
+                    role: "Enseignant",
+                    status: "Actif",
+                    registeredAt: "2025-02-28",
+                    lastLogin: "2025-04-04 13:17:45",
+                    avatar: "/assets/images/teacher-avatar.jpg",
+                    verified: true
+                },
+                {
+                    id: "8",
+                    firstName: "Léa",
+                    lastName: "Petit",
+                    email: "lea.petit@example.com",
+                    role: "Étudiant",
+                    status: "Actif",
+                    registeredAt: "2025-03-10",
+                    lastLogin: "2025-04-02 19:05:33",
+                    avatar: null,
+                    verified: true
+                },
+                {
+                    id: "9",
+                    firstName: "Hugo",
+                    lastName: "Leroy",
+                    email: "hugo.leroy@example.com",
+                    role: "Étudiant",
+                    status: "Inactif",
+                    registeredAt: "2025-01-15",
+                    lastLogin: "2025-02-20 08:12:40",
+                    avatar: null,
+                    verified: true
+                },
+                {
+                    id: "10",
+                    firstName: "Chloé",
+                    lastName: "Simon",
+                    email: "chloe.simon@example.com",
+                    role: "Étudiant",
+                    status: "En attente",
+                    registeredAt: "2025-04-04",
+                    lastLogin: null,
+                    avatar: null,
+                    verified: false
+                },
+                {
+                    id: "11",
+                    firstName: "Louis",
+                    lastName: "Bernard",
+                    email: "louis.bernard@example.com",
+                    role: "Enseignant",
+                    status: "Actif",
+                    registeredAt: "2025-02-05",
+                    lastLogin: "2025-04-05 11:30:15",
+                    avatar: null,
+                    verified: true
+                },
+                {
+                    id: "12",
+                    firstName: "Camille",
+                    lastName: "Roux",
+                    email: "camille.roux@example.com",
+                    role: "Étudiant",
+                    status: "Actif",
+                    registeredAt: "2025-03-20",
+                    lastLogin: "2025-04-06 09:18:27",
+                    avatar: "/assets/images/student-avatar.jpg",
+                    verified: true
+                },
+            ]);
+            setIsLoading(false);
+        }, 1000);
+    }, []);
+
+    // Filtrage des utilisateurs
+    const filteredUsers = users.filter(user => {
+        const searchMatch =
+            user.firstName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            user.lastName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            user.email.toLowerCase().includes(searchTerm.toLowerCase());
+
+        return (
+            searchMatch &&
+            (filterRole === "" || user.role === filterRole) &&
+            (filterStatus === "" || user.status === filterStatus) &&
+            (filterVerified === "" ||
+                (filterVerified === "verified" && user.verified) ||
+                (filterVerified === "unverified" && !user.verified))
+        );
+    });
+
+    // Pagination
+    const indexOfLastUser = currentPage * itemsPerPage;
+    const indexOfFirstUser = indexOfLastUser - itemsPerPage;
+    const currentUsers = filteredUsers.slice(indexOfFirstUser, indexOfLastUser);
+    const totalPages = Math.ceil(filteredUsers.length / itemsPerPage);
+
+    // Réinitialiser la page en cas de changement de filtre
+    useEffect(() => {
+        setCurrentPage(1);
+    }, [searchTerm, filterRole, filterStatus, filterVerified]);
+
+    // Changer de page
+    const paginate = (pageNumber: number) => {
+        if (pageNumber > 0 && pageNumber <= totalPages) {
+            setCurrentPage(pageNumber);
+        }
+    };
+
+    // Changer le statut d'un utilisateur
+    const changeUserStatus = (userId: string, newStatus: User['status']) => {
+        setUsers(users.map(user =>
+            user.id === userId
+                ? { ...user, status: newStatus }
+                : user
+        ));
+    };
+
+    // Changer le rôle d'un utilisateur
+    const changeUserRole = (userId: string, newRole: User['role']) => {
+        setUsers(users.map(user =>
+            user.id === userId
+                ? { ...user, role: newRole }
+                : user
+        ));
+    };
+
+    // Activer un compte utilisateur
+    const activateUser = (userId: string) => {
+        setUsers(users.map(user =>
+            user.id === userId
+                ? { ...user, status: "Actif", verified: true }
+                : user
+        ));
+    };
+
+    // Désactiver un compte utilisateur
+    const deactivateUser = (userId: string) => {
+        setUsers(users.map(user =>
+            user.id === userId
+                ? { ...user, status: "Inactif" }
+                : user
+        ));
+    };
+
+    // Ouvrir le modal utilisateur
+    const openUserModal = (user: User) => {
+        setSelectedUser(user);
+        setIsUserModalOpen(true);
+    };
+
+    // Fermer le modal utilisateur
+    const closeUserModal = () => {
+        setSelectedUser(null);
+        setIsUserModalOpen(false);
+    };
+
+    // Format timestamp
+    const formatDate = (dateString: string | null) => {
+        if (!dateString) return "Jamais";
+
+        // Si c'est une date complète avec heure
+        if (dateString.includes(" ")) {
+            return dateString;
+        }
+
+        // Si c'est juste une date
+        const date = new Date(dateString);
+        return date.toLocaleDateString('fr-FR');
+    };
+
+    // Compter les utilisateurs par statut
+    const userCounts = {
+        total: users.length,
+        active: users.filter(user => user.status === "Actif").length,
+        pending: users.filter(user => user.status === "En attente").length,
+        inactive: users.filter(user => user.status === "Inactif").length,
+    };
+
     return (
-        <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex-grow">
-            <h1 className="text-white">Gestion Utilisateurs</h1>
+        <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex-grow min-h-screen">
+            {/* En-tête et statistiques */}
+            <div className="mb-6">
+                <h1 className="text-2xl font-bold text-[#D4AF37] mb-4">Gestion des Utilisateurs</h1>
+
+                {/* Statistiques */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+                    <div className="bg-zinc-800 p-4 rounded-lg border border-zinc-700">
+                        <p className="text-sm text-zinc-400">Total des utilisateurs</p>
+                        <p className="text-2xl font-bold text-white">{userCounts.total}</p>
+                    </div>
+                    <div className="bg-zinc-800 p-4 rounded-lg border border-zinc-700">
+                        <p className="text-sm text-zinc-400">Comptes actifs</p>
+                        <p className="text-2xl font-bold text-green-500">{userCounts.active}</p>
+                    </div>
+                    <div className="bg-zinc-800 p-4 rounded-lg border border-zinc-700">
+                        <p className="text-sm text-zinc-400">En attente d'activation</p>
+                        <p className="text-2xl font-bold text-yellow-500">{userCounts.pending}</p>
+                    </div>
+                    <div className="bg-zinc-800 p-4 rounded-lg border border-zinc-700">
+                        <p className="text-sm text-zinc-400">Comptes inactifs</p>
+                        <p className="text-2xl font-bold text-red-500">{userCounts.inactive}</p>
+                    </div>
+                </div>
+
+                {/* Filtrage et recherche */}
+                <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+                    <div className="relative flex-grow">
+                        <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-zinc-400 h-4 w-4" />
+                        <input
+                            type="text"
+                            placeholder="Rechercher par nom, prénom ou email..."
+                            className="pl-10 pr-4 py-2 w-full bg-zinc-800 border border-zinc-700 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-[#D4AF37]"
+                            value={searchTerm}
+                            onChange={(e) => setSearchTerm(e.target.value)}
+                        />
+                    </div>
+
+                    <div className="flex gap-3 w-full md:w-auto">
+                        <button
+                            className="px-4 py-2 bg-zinc-800 hover:bg-zinc-700 text-zinc-300 rounded-md flex items-center justify-center gap-2 transition-colors"
+                            onClick={() => setIsFilterOpen(!isFilterOpen)}
+                        >
+                            <Filter className="h-4 w-4" />
+                            Filtres
+                        </button>
+
+                        <button
+                            className="px-4 py-2 bg-[#D4AF37] hover:bg-[#c4a030] text-black font-medium rounded-md flex items-center justify-center gap-2 transition-colors"
+                            onClick={() => {/* Ajouter un utilisateur */}}
+                        >
+                            <UserPlus className="h-4 w-4" />
+                            Nouvel utilisateur
+                        </button>
+                    </div>
+                </div>
+
+                {/* Options de filtrage */}
+                {isFilterOpen && (
+                    <div className="mt-4 p-4 bg-zinc-800 rounded-md border border-zinc-700 grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div>
+                            <label className="block text-sm font-medium text-zinc-300 mb-1">Rôle</label>
+                            <select
+                                className="w-full bg-zinc-700 border border-zinc-600 rounded-md px-3 py-2 text-white focus:outline-none focus:ring-2 focus:ring-[#D4AF37]"
+                                value={filterRole}
+                                onChange={(e) => setFilterRole(e.target.value)}
+                            >
+                                <option value="">Tous</option>
+                                <option value="Admin">Admin</option>
+                                <option value="Enseignant">Enseignant</option>
+                                <option value="Étudiant">Étudiant</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <label className="block text-sm font-medium text-zinc-300 mb-1">Statut</label>
+                            <select
+                                className="w-full bg-zinc-700 border border-zinc-600 rounded-md px-3 py-2 text-white focus:outline-none focus:ring-2 focus:ring-[#D4AF37]"
+                                value={filterStatus}
+                                onChange={(e) => setFilterStatus(e.target.value)}
+                            >
+                                <option value="">Tous</option>
+                                <option value="Actif">Actif</option>
+                                <option value="Inactif">Inactif</option>
+                                <option value="En attente">En attente</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <label className="block text-sm font-medium text-zinc-300 mb-1">Vérification</label>
+                            <select
+                                className="w-full bg-zinc-700 border border-zinc-600 rounded-md px-3 py-2 text-white focus:outline-none focus:ring-2 focus:ring-[#D4AF37]"
+                                value={filterVerified}
+                                onChange={(e) => setFilterVerified(e.target.value)}
+                            >
+                                <option value="">Tous</option>
+                                <option value="verified">Vérifiés</option>
+                                <option value="unverified">Non vérifiés</option>
+                            </select>
+                        </div>
+
+                        <div className="md:col-span-3 flex justify-end">
+                            <button
+                                className="px-4 py-2 text-white bg-zinc-700 hover:bg-zinc-600 rounded-md"
+                                onClick={() => {
+                                    setFilterRole("");
+                                    setFilterStatus("");
+                                    setFilterVerified("");
+                                }}
+                            >
+                                Réinitialiser les filtres
+                            </button>
+                        </div>
+                    </div>
+                )}
+            </div>
+
+            {/* Liste des utilisateurs */}
+            {isLoading ? (
+                <div className="flex justify-center items-center h-64">
+                    <div className="text-xl text-zinc-400">Chargement des utilisateurs...</div>
+                </div>
+            ) : filteredUsers.length === 0 ? (
+                <div className="bg-zinc-800 p-10 rounded-md text-center">
+                    <div className="text-xl text-zinc-400 mb-4">Aucun utilisateur trouvé</div>
+                    <button
+                        className="px-4 py-2 bg-[#D4AF37] hover:bg-[#c4a030] text-black font-medium rounded-md inline-flex items-center gap-2"
+                    >
+                        <UserPlus className="h-4 w-4" />
+                        Ajouter un utilisateur
+                    </button>
+                </div>
+            ) : (
+                <div className="overflow-x-auto">
+                    <table className="min-w-full bg-zinc-900 rounded-lg overflow-hidden">
+                        <thead className="bg-zinc-800">
+                        <tr>
+                            <th className="py-3 px-4 text-left text-xs font-medium text-zinc-300 uppercase tracking-wider">Utilisateur</th>
+                            <th className="py-3 px-4 text-left text-xs font-medium text-zinc-300 uppercase tracking-wider">Email</th>
+                            <th className="py-3 px-4 text-left text-xs font-medium text-zinc-300 uppercase tracking-wider hidden md:table-cell">Rôle</th>
+                            <th className="py-3 px-4 text-left text-xs font-medium text-zinc-300 uppercase tracking-wider">Statut</th>
+                            <th className="py-3 px-4 text-left text-xs font-medium text-zinc-300 uppercase tracking-wider hidden lg:table-cell">Inscription</th>
+                            <th className="py-3 px-4 text-right text-xs font-medium text-zinc-300 uppercase tracking-wider">Actions</th>
+                        </tr>
+                        </thead>
+                        <tbody className="divide-y divide-zinc-700">
+                        {currentUsers.map((user, index) => (
+                            <tr
+                                key={user.id}
+                                className={`${index % 2 === 0 ? 'bg-zinc-900' : 'bg-zinc-850'} hover:bg-zinc-800 transition-colors`}
+                            >
+                                <td className="py-4 px-4 whitespace-nowrap">
+                                    <div className="flex items-center">
+                                        <div className="h-9 w-9 flex-shrink-0 mr-3">
+                                            {user.avatar ? (
+                                                <img
+                                                    src={user.avatar}
+                                                    alt={`${user.firstName} ${user.lastName}`}
+                                                    className="h-9 w-9 rounded-full object-cover"
+                                                />
+                                            ) : (
+                                                <div className="h-9 w-9 rounded-full bg-zinc-700 flex items-center justify-center text-[#D4AF37] uppercase">
+                                                    {user.firstName.charAt(0)}{user.lastName.charAt(0)}
+                                                </div>
+                                            )}
+                                        </div>
+                                        <div>
+                                            <div className="text-sm font-medium text-white">
+                                                {user.firstName} {user.lastName}
+                                            </div>
+                                            {!user.verified && (
+                                                <div className="flex items-center mt-1">
+                                                    <AlertTriangle className="h-3 w-3 text-yellow-500 mr-1" />
+                                                    <span className="text-xs text-yellow-500">Non vérifié</span>
+                                                </div>
+                                            )}
+                                        </div>
+                                    </div>
+                                </td>
+                                <td className="py-4 px-4 whitespace-nowrap">
+                                    <div className="text-sm text-zinc-300">{user.email}</div>
+                                </td>
+                                <td className="py-4 px-4 whitespace-nowrap hidden md:table-cell">
+                                    <div className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
+                                        user.role === 'Admin' ? 'bg-purple-100 text-purple-800' :
+                                            user.role === 'Enseignant' ? 'bg-blue-100 text-blue-800' :
+                                                'bg-gray-100 text-gray-800'
+                                    }`}>
+                                        {user.role === 'Admin' && <Shield className="h-3 w-3 mr-1" />}
+                                        {user.role === 'Enseignant' && <UserCheck className="h-3 w-3 mr-1" />}
+                                        {user.role}
+                                    </div>
+                                </td>
+                                <td className="py-4 px-4 whitespace-nowrap">
+                                            <span className={`px-2 inline-flex text-xs leading-5 font-medium rounded-full ${
+                                                user.status === 'Actif' ? 'bg-green-100 text-green-800' :
+                                                    user.status === 'Inactif' ? 'bg-red-100 text-red-800' :
+                                                        'bg-yellow-100 text-yellow-800'
+                                            }`}>
+                                                {user.status}
+                                            </span>
+                                </td>
+                                <td className="py-4 px-4 whitespace-nowrap hidden lg:table-cell">
+                                    <div className="flex items-center text-sm text-zinc-400">
+                                        <Clock className="h-3 w-3 mr-1" />
+                                        {formatDate(user.registeredAt)}
+                                    </div>
+                                </td>
+                                <td className="py-4 px-4 whitespace-nowrap text-right text-sm font-medium">
+                                    <button
+                                        onClick={() => openUserModal(user)}
+                                        className="text-zinc-400 hover:text-white transition-colors mr-2"
+                                        title="Voir détails"
+                                    >
+                                        <Eye className="h-5 w-5" />
+                                    </button>
+
+                                    {user.status === 'En attente' && (
+                                        <button
+                                            onClick={() => activateUser(user.id)}
+                                            className="text-green-500 hover:text-green-400 transition-colors mr-2"
+                                            title="Activer le compte"
+                                        >
+                                            <CheckCircle className="h-5 w-5" />
+                                        </button>
+                                    )}
+
+                                    {user.status === 'Actif' && (
+                                        <button
+                                            onClick={() => deactivateUser(user.id)}
+                                            className="text-red-500 hover:text-red-400 transition-colors"
+                                            title="Désactiver le compte"
+                                        >
+                                            <XCircle className="h-5 w-5" />
+                                        </button>
+                                    )}
+
+                                    {user.status === 'Inactif' && (
+                                        <button
+                                            onClick={() => activateUser(user.id)}
+                                            className="text-green-500 hover:text-green-400 transition-colors"
+                                            title="Réactiver le compte"
+                                        >
+                                            <CheckCircle className="h-5 w-5" />
+                                        </button>
+                                    )}
+                                </td>
+                            </tr>
+                        ))}
+                        </tbody>
+                    </table>
+
+                    {/* Pagination */}
+                    <div className="px-6 py-4 bg-zinc-900 border-t border-zinc-800">
+                        <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
+                            <div className="text-sm text-zinc-400">
+                                Affichage de {indexOfFirstUser + 1} à {Math.min(indexOfLastUser, filteredUsers.length)} sur {filteredUsers.length} utilisateurs
+                            </div>
+
+                            <div className="flex items-center space-x-4">
+                                <div className="flex items-center">
+                                    <label htmlFor="itemsPerPage" className="text-sm text-zinc-400 mr-2">Afficher:</label>
+                                    <select
+                                        id="itemsPerPage"
+                                        value={itemsPerPage}
+                                        onChange={(e) => {
+                                            setItemsPerPage(Number(e.target.value));
+                                            setCurrentPage(1);
+                                        }}
+                                        className="bg-zinc-800 border border-zinc-700 text-zinc-300 text-sm rounded-md px-2 py-1 focus:ring-[#D4AF37] focus:border-[#D4AF37]"
+                                    >
+                                        <option value={5}>5</option>
+                                        <option value={10}>10</option>
+                                        <option value={20}>20</option>
+                                        <option value={50}>50</option>
+                                    </select>
+                                </div>
+
+                                <div className="flex items-center space-x-1">
+                                    <button
+                                        onClick={() => paginate(currentPage - 1)}
+                                        disabled={currentPage === 1}
+                                        className={`p-1 rounded-md ${currentPage === 1 ? 'text-zinc-600 cursor-not-allowed' : 'text-zinc-400 hover:bg-zinc-800'}`}
+                                    >
+                                        <ChevronLeft className="h-5 w-5" />
+                                    </button>
+
+                                    {[...Array(totalPages)].map((_, index) => {
+                                        const pageNumber = index + 1;
+                                        const showPage =
+                                            pageNumber === 1 ||
+                                            pageNumber === totalPages ||
+                                            (pageNumber >= currentPage - 1 && pageNumber <= currentPage + 1);
+
+                                        if (!showPage) {
+                                            if (pageNumber === 2 || pageNumber === totalPages - 1) {
+                                                return (
+                                                    <span key={pageNumber} className="px-2 py-1 text-zinc-500">...</span>
+                                                );
+                                            }
+                                            return null;
+                                        }
+
+                                        return (
+                                            <button
+                                                key={pageNumber}
+                                                onClick={() => paginate(pageNumber)}
+                                                className={`px-3 py-1 rounded-md ${
+                                                    pageNumber === currentPage
+                                                        ? 'bg-[#D4AF37] text-black font-medium'
+                                                        : 'text-zinc-400 hover:bg-zinc-800'
+                                                }`}
+                                            >
+                                                {pageNumber}
+                                            </button>
+                                        );
+                                    })}
+
+                                    <button
+                                        onClick={() => paginate(currentPage + 1)}
+                                        disabled={currentPage === totalPages}
+                                        className={`p-1 rounded-md ${currentPage === totalPages ? 'text-zinc-600 cursor-not-allowed' : 'text-zinc-400 hover:bg-zinc-800'}`}
+                                    >
+                                        <ChevronRight className="h-5 w-5" />
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            )}
+
+            {/* Modal détails utilisateur */}
+            {isUserModalOpen && selectedUser && (
+                <div className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50 p-4">
+                    <div className="bg-zinc-800 rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+                        <div className="flex justify-between items-center border-b border-zinc-700 p-5">
+                            <h2 className="text-xl font-bold text-[#D4AF37]">
+                                Détails de l'utilisateur
+                            </h2>
+                            <button
+                                className="text-zinc-400 hover:text-white"
+                                onClick={closeUserModal}
+                            >
+                                <X className="h-6 w-6" />
+                            </button>
+                        </div>
+
+                        <div className="p-5">
+                            {/* Profil */}
+                            <div className="flex flex-col sm:flex-row items-center sm:items-start gap-5 mb-6">
+                                <div className="w-24 h-24 rounded-full bg-zinc-700 flex items-center justify-center text-3xl text-[#D4AF37] uppercase">
+                                    {selectedUser.avatar ? (
+                                        <img
+                                            src={selectedUser.avatar}
+                                            alt={`${selectedUser.firstName} ${selectedUser.lastName}`}
+                                            className="h-24 w-24 rounded-full object-cover"
+                                        />
+                                    ) : (
+                                        `${selectedUser.firstName.charAt(0)}${selectedUser.lastName.charAt(0)}`
+                                    )}
+                                </div>
+
+                                <div className="text-center sm:text-left">
+                                    <h3 className="text-xl font-semibold text-white mb-1">
+                                        {selectedUser.firstName} {selectedUser.lastName}
+                                    </h3>
+
+                                    <div className="flex flex-col sm:flex-row sm:items-center gap-2 mb-3">
+                                        <div className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
+                                            selectedUser.role === 'Admin' ? 'bg-purple-100 text-purple-800' :
+                                                selectedUser.role === 'Enseignant' ? 'bg-blue-100 text-blue-800' :
+                                                    'bg-gray-100 text-gray-800'
+                                        }`}>
+                                            {selectedUser.role}
+                                        </div>
+
+                                        <span className={`px-2 inline-flex text-xs leading-5 font-medium rounded-full ${
+                                            selectedUser.status === 'Actif' ? 'bg-green-100 text-green-800' :
+                                                selectedUser.status === 'Inactif' ? 'bg-red-100 text-red-800' :
+                                                    'bg-yellow-100 text-yellow-800'
+                                        }`}>
+                                            {selectedUser.status}
+                                        </span>
+
+                                        {!selectedUser.verified && (
+                                            <span className="px-2 inline-flex text-xs leading-5 font-medium rounded-full bg-yellow-100 text-yellow-800">
+                                                <AlertTriangle className="h-3 w-3 mr-1" /> Non vérifié
+                                            </span>
+                                        )}
+                                    </div>
+
+                                    <p className="text-zinc-300 flex items-center justify-center sm:justify-start">
+                                        <Mail className="h-4 w-4 mr-1 text-zinc-400" />
+                                        {selectedUser.email}
+                                    </p>
+                                </div>
+                            </div>
+
+                            {/* Informations détaillées */}
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                                <div className="bg-zinc-900 p-3 rounded-md">
+                                    <p className="text-xs text-zinc-500 uppercase mb-1">Date d'inscription</p>
+                                    <p className="text-sm text-white">{formatDate(selectedUser.registeredAt)}</p>
+                                </div>
+
+                                <div className="bg-zinc-900 p-3 rounded-md">
+                                    <p className="text-xs text-zinc-500 uppercase mb-1">Dernière connexion</p>
+                                    <p className="text-sm text-white">{formatDate(selectedUser.lastLogin)}</p>
+                                </div>
+                            </div>
+
+                            {/* Actions utilisateur */}
+                            <div className="flex flex-wrap gap-3 justify-end mt-6">
+                                <button
+                                    onClick={() => {
+                                        // Envoyer un email
+                                        closeUserModal();
+                                    }}
+                                    className="px-3 py-1.5 bg-zinc-700 hover:bg-zinc-600 text-white rounded-md text-sm flex items-center gap-1"
+                                >
+                                    <Mail className="h-4 w-4" /> Contacter
+                                </button>
+
+                                <button
+                                    onClick={() => {
+                                        // Modifier les paramètres utilisateur
+                                        closeUserModal();
+                                    }}
+                                    className="px-3 py-1.5 bg-zinc-700 hover:bg-zinc-600 text-white rounded-md text-sm flex items-center gap-1"
+                                >
+                                    <Settings className="h-4 w-4" /> Paramètres
+                                </button>
+
+                                {selectedUser.status === 'En attente' && (
+                                    <button
+                                        onClick={() => {
+                                            activateUser(selectedUser.id);
+                                            closeUserModal();
+                                        }}
+                                        className="px-3 py-1.5 bg-green-600 hover:bg-green-700 text-white rounded-md text-sm flex items-center gap-1"
+                                    >
+                                        <CheckCircle className="h-4 w-4" /> Activer le compte
+                                    </button>
+                                )}
+
+                                {selectedUser.status === 'Actif' && (
+                                    <button
+                                        onClick={() => {
+                                            deactivateUser(selectedUser.id);
+                                            closeUserModal();
+                                        }}
+                                        className="px-3 py-1.5 bg-red-600 hover:bg-red-700 text-white rounded-md text-sm flex items-center gap-1"
+                                    >
+                                        <XCircle className="h-4 w-4" /> Désactiver le compte
+                                    </button>
+                                )}
+
+                                {selectedUser.status === 'Inactif' && (
+                                    <button
+                                        onClick={() => {
+                                            activateUser(selectedUser.id);
+                                            closeUserModal();
+                                        }}
+                                        className="px-3 py-1.5 bg-green-600 hover:bg-green-700 text-white rounded-md text-sm flex items-center gap-1"
+                                    >
+                                        <CheckCircle className="h-4 w-4" /> Réactiver le compte
+                                    </button>
+                                )}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            )}
         </main>
     );
 }

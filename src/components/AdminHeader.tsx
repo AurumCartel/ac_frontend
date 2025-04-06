@@ -17,8 +17,8 @@ export default function Header() {
         {name: "Accueil", href: "/pages/home"},
         {name: "Cours", href: "/pages/cours"},
         {name: "Messagerie", href: "/pages/messagerie"},
-        {name: "Utilisateurs", href: "/pages/utilisateurs"},
         {name: "Gestion des cours", href: "/pages/gestion-cours"},
+        {name: "Utilisateurs", href: "/pages/utilisateurs"},
     ];
 
     // Fonction de redirection pour empêcher l'accès si l'utilisateur n'est pas connecté
