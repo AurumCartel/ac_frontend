@@ -2,11 +2,11 @@ pipeline {
     agent any
 
     environment {
-        IMAGE_NAME = "emilibadmin:latest"
-        CONTAINER_NAME = "emilib-admin"
-        NEXT_PUBLIC_API_BASE_URL_DEV = "https://apigateway.emit.mg/api"
-        NEXT_PUBLIC_API_BASE_URL_PROD = "https://apigateway.emit.mg/api"
-        PORT = "4000"
+        IMAGE_NAME = "aurum-cartel:latest"
+        CONTAINER_NAME = "aurum-cartel"
+        NEXT_PUBLIC_API_BASE_URL_DEV = "https://api-ac.alainpatrick.tech"
+        NEXT_PUBLIC_API_BASE_URL_PROD = "https://api-ac.alainpatrick.tech"
+        PORT = "4141"
     }
 
     stages {
