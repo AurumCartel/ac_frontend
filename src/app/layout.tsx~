@@ -1,25 +1,47 @@
-"use client";
-
-import {metadata} from "../utils/metadata";
+import type {Metadata} from "next";
+import type {Viewport} from "next";
 import {Inter} from "next/font/google";
 import "./globals.css";
 import React from "react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import {useRouter} from "next/router";
+import AdminHeader from "@/components/AdminHeader"; // Nouveau Header pour l'admin
 
 const inter = Inter({
     subsets: ["latin"],
     display: "swap",
+    variable: "--font-inter",
 });
+
+export const viewport: Viewport = {
+    width: 'device-width',
+    initialScale: 1,
+    maximumScale: 1,
+};
+
+export const metadata: Metadata = {
+    title: {
+        default: "Aurum Cartel",
+        template: "%s | Aurum Cartel",
+    },
+    description: "Rejoignez l'Aurum Cartel, une communauté d'entrepreneurs et de traders passionnés",
+    keywords: ["trading", "formation", "entrepreneuriat", "finance", "communauté"],
+    authors: [{name: "Aurum Cartel"}],
+    creator: "Sandro Lu",
+    openGraph: {
+        type: "website",
+        locale: "fr_FR",
+        siteName: "Aurum Cartel",
+    },
+};
 
 export default function RootLayout({
                                        children,
                                    }: Readonly<{
     children: React.ReactNode;
 }>) {
-    const router = useRouter();
-    const hideHeaderFooter = router.pathname === "/messagerie"; // Masquer header/footer pour la messagerie
+    // Simuler l'état de connexion de l'admin (remplacer avec logique réelle)
+    const isAdmin = true; // Mettre `true` si l'admin est connecté
 
     return (
         <html
@@ -28,7 +50,9 @@ export default function RootLayout({
             suppressHydrationWarning
         >
         <body className="antialiased min-h-screen flex flex-col bg-zinc-950 font-sans">
-        {!hideHeaderFooter && <Header/>}
+        {/* Affiche le Header admin si l'utilisateur est admin */}
+        {isAdmin ? <AdminHeader /> : <Header />}
+
         <main className="flex-1 relative isolate">
             <div
                 className="fixed inset-0 -z-10 bg-zinc-800"
@@ -36,9 +60,11 @@ export default function RootLayout({
             >
                 <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/50 to-black/80"/>
             </div>
-            <div className="relative w-full min-h-full">{children}</div>
+            <div className="relative w-full min-h-full">
+                {children}
+            </div>
         </main>
-        {!hideHeaderFooter && <Footer/>}
+        <Footer />
         </body>
         </html>
     );

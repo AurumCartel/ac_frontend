@@ -5,6 +5,7 @@ import "./globals.css";
 import React from "react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import AdminHeader from "@/components/AdminHeader"; // Nouveau Header pour l'gestion-cours
 
 const inter = Inter({
     subsets: ["latin"],
@@ -39,6 +40,9 @@ export default function RootLayout({
                                    }: Readonly<{
     children: React.ReactNode;
 }>) {
+    // Simuler l'état de connexion de l'gestion-cours (remplacer avec logique réelle)
+    const isAdmin = true; // Mettre `true` si l'gestion-cours est connecté
+
     return (
         <html
             lang="fr"
@@ -46,7 +50,9 @@ export default function RootLayout({
             suppressHydrationWarning
         >
         <body className="antialiased min-h-screen flex flex-col bg-zinc-950 font-sans">
-        <Header/>
+        {/* Affiche le Header gestion-cours si l'utilisateur est gestion-cours */}
+        {isAdmin ? <AdminHeader /> : <Header />}
+
         <main className="flex-1 relative isolate">
             <div
                 className="fixed inset-0 -z-10 bg-zinc-800"
@@ -58,7 +64,7 @@ export default function RootLayout({
                 {children}
             </div>
         </main>
-        <Footer/>
+        <Footer />
         </body>
         </html>
     );

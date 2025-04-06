@@ -1,0 +1,54 @@
+// components/AdminHeader.tsx
+"use client";
+
+import React from "react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+
+const AdminHeader = () => {
+    const pathname = usePathname();
+
+    const navigation = [
+        { name: "Dashboard", href: "/admin/dashboard" },
+        { name: "Gestion des utilisateurs", href: "/admin/users" },
+        { name: "Statistiques", href: "/admin/stats" },
+    ];
+
+    return (
+        <header className="bg-blue-900 text-white w-full top-0 z-50">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div className="flex justify-between items-center h-16">
+                    {/* Logo Admin */}
+                    <div className="flex-shrink-0">
+                        <Link href="/">
+                            <img
+                                src="/assets/images/admin-logo.png"
+                                alt="AurumCartel Admin"
+                                className="h-12 w-12 object-cover"
+                            />
+                        </Link>
+                    </div>
+
+                    {/* Admin Navigation */}
+                    <nav className="hidden md:flex space-x-8">
+                        {navigation.map((item) => (
+                            <Link
+                                key={item.name}
+                                href={item.href}
+                                className={`px-3 py-2 rounded-md text-sm font-medium transition-colors ${
+                                    pathname === item.href
+                                        ? "underline underline-offset-8 decoration-[#D4AF37] text-[#D4AF37]"
+                                        : "text-zinc-300 hover:[#D4AF37] hover:text-white"
+                                }`}
+                            >
+                                {item.name}
+                            </Link>
+                        ))}
+                    </nav>
+                </div>
+            </div>
+        </header>
+    );
+};
+
+export default AdminHeader;
